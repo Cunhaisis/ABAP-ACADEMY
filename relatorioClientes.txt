@@ -17,8 +17,8 @@ TYPES: BEGIN OF ty_kna1,
         kunnr  TYPE kunnr,
         name1  TYPE name1_gp,
         ort01  TYPE ort01_gp,
-        regio  TYPE regio,
-        stras  TYPE stras,
+        regio  TYPE char3,
+        stras  TYPE stras_gp,
         END OF ty_kna1.
 
 *&---------------------------------------------------------------------*
@@ -31,9 +31,19 @@ DATA: wa_kna1 TYPE ty_kna1.
 DATA: ti_kna1 TYPE STANDARD TABLE OF ty_kna1.
 
 *&---------------------------------------------------------------------*
+*Top-of-Page
+*&---------------------------------------------------------------------*
+TOP-OF-PAGE.
+  WRITE: / 'Código',
+          12 'Nome',
+          48 'Cidade',
+          84 'Endereço',
+          120 'UF'.
+
+*&---------------------------------------------------------------------*
 *Selection-Screeen
 *&---------------------------------------------------------------------*
-SELECT-OPTIONS s_kunnr FOR kna1-kunnr.
+  SELECT-OPTIONS s_kunnr FOR kna1-kunnr.
 
 *&---------------------------------------------------------------------*
 *Start-of-Selection
@@ -53,6 +63,8 @@ START-OF-SELECTION.
     WRITE: / wa_kna1-kunnr,
              wa_kna1-name1,
              wa_kna1-ort01,
-             wa_kna1-regio,
-             wa_kna1-stras.
+             wa_kna1-stras,
+             wa_kna1-regio.
   ENDLOOP.
+
+  ULINE.
