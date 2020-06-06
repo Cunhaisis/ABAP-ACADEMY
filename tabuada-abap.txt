@@ -1,0 +1,30 @@
+*&---------------------------------------------------------------------*
+*& Report  ZTABUADA0602
+*&
+*&---------------------------------------------------------------------*
+*&Descrição Tabuda
+*&Autor: Isis Cunha - Data:06/06/2020
+*&---------------------------------------------------------------------*
+
+REPORT ZTABUADA0602.
+
+PARAMETERS P_NUM TYPE I.
+
+START-OF-SELECTION. "Evento
+
+  DATA VL_RESULTADO TYPE I.
+
+
+
+  DO 10 TIMES.
+
+     VL_RESULTADO = P_NUM * SY-INDEX.
+
+    WRITE / P_NUM.
+    WRITE 'X'.
+    WRITE SY-INDEX.
+    WRITE '='.
+    WRITE VL_RESULTADO.
+
+
+  ENDDO.
