@@ -1,0 +1,70 @@
+*&---------------------------------------------------------------------*
+*& Report  ZFORNECEDORES0602
+*&
+*&---------------------------------------------------------------------*
+*&Descrição: Relatório de Fornecedores
+*&Autor: Isis Cunha - Data: 06.06.2020
+*&---------------------------------------------------------------------*
+
+REPORT zfornecedores0602.
+
+TABLES: lfa1.
+
+TYPES: BEGIN OF ty_lfa1,
+        lifnr TYPE lifnr,
+        land1 TYPE land1,
+        name1 TYPE name1,
+        ort01 TYPE ort01,
+        regio TYPE regio,
+        stras TYPE stras,
+END OF ty_lfa1.
+
+*&---------------------------------------------------------------------*
+*Workarea
+*&---------------------------------------------------------------------*
+DATA: wa_lfa1 TYPE ty_lfa1.
+
+*&---------------------------------------------------------------------*
+*Tabela Interna
+*&---------------------------------------------------------------------*
+DATA: ti_lfa1 TYPE STANDARD TABLE OF ty_lfa1.
+
+*&---------------------------------------------------------------------*
+*Top-of-Page
+*&---------------------------------------------------------------------*
+TOP-OF-PAGE.
+  WRITE: / 'Código',
+        12 'País',
+        17 'Nome Fornecedor',
+        47 'Cidade',
+        73 'UF',
+        77 'Endereço'.
+
+*&---------------------------------------------------------------------*
+*Selection-Screeen
+*&---------------------------------------------------------------------*
+  SELECT-OPTIONS s_lifnr FOR lfa1-lifnr.
+
+START-OF-SELECTION.
+
+  SELECT lifnr
+         land1
+         name1
+         ort01
+         regio
+         stras
+    FROM lfa1
+    INTO TABLE ti_lfa1
+    WHERE lifnr IN s_lifnr.
+
+  LOOP AT ti_lfa1 INTO wa_lfa1.
+    WRITE: / wa_lfa1-lifnr,
+             wa_lfa1-land1,
+             wa_lfa1-name1,
+             wa_lfa1-ort01,
+             wa_lfa1-regio,
+             wa_lfa1-stras.
+  ENDLOOP.
+
+  ULINE.
+
