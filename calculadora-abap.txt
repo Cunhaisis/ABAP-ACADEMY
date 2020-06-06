@@ -38,10 +38,11 @@ START-OF-SELECTION.
       WRITE:   VL_RESULTADO.
 
     WHEN '/'.
-
+        if p_num > 0.
       VL_RESULTADO = P_NUM1 / P_NUM2.
-
-      WRITE / 'Resultado da Divisão:'.
+        else.
+        MESSAGE 'Não é possivel dividir por Zero'
+      WRITE / 'Result ado da Divisão:'.
       WRITE:   VL_RESULTADO.
 
 
