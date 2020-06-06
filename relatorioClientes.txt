@@ -67,4 +67,4 @@ START-OF-SELECTION.
              wa_kna1-regio.
   ENDLOOP.
 
-  ULINE. 
+  ULINE.  
