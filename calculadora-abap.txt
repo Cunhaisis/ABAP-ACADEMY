@@ -1,0 +1,50 @@
+*&---------------------------------------------------------------------*
+*& Report  ZCALCULADORA0602
+*&
+*&---------------------------------------------------------------------*
+*&Descrição: Programa Calculadora
+*&Autor: Isis Cunha  - Data: 06/06/2020
+*&---------------------------------------------------------------------*
+
+REPORT ZCALCULADORA0602.
+
+PARAMETERS: P_NUM1 TYPE I,
+            P_OPCAO TYPE C,
+            P_NUM2 TYPE I.
+
+
+START-OF-SELECTION.
+
+  DATA: VL_RESULTADO TYPE I.
+
+  CASE P_OPCAO.
+    WHEN '+'.
+      VL_RESULTADO = P_NUM1 + P_NUM2.
+      WRITE / 'Resultado da Soma:'.
+      WRITE:   VL_RESULTADO.
+
+    WHEN '-'.
+
+      VL_RESULTADO = P_NUM1 - P_NUM2.
+
+      WRITE / 'Resultado da Subtração:'.
+      WRITE:   VL_RESULTADO.
+
+    WHEN '*'.
+
+      VL_RESULTADO = P_NUM1 * P_NUM2.
+
+      WRITE / 'Resultado da Multiplicação:'.
+      WRITE:   VL_RESULTADO.
+
+    WHEN '/'.
+
+      VL_RESULTADO = P_NUM1 / P_NUM2.
+
+      WRITE / 'Resultado da Divisão:'.
+      WRITE:   VL_RESULTADO.
+
+
+  ENDCASE.
+
+END-OF-SELECTION.
