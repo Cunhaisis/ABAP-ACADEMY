@@ -1,0 +1,94 @@
+*&---------------------------------------------------------------------*
+*& Report  ZVENDAS_ALV_2002
+*&
+*&---------------------------------------------------------------------*
+*&Descrição: Relatório de Vendas
+*&Data: 20.06.2020  - Autor Isis Cunha
+*&---------------------------------------------------------------------*
+
+REPORT ZVENDAS_ALV_2002.
+
+*----------------------------------------------------------------------*
+*  Tables
+*----------------------------------------------------------------------*
+TABLES: vbak.
+
+*----------------------------------------------------------------------*
+*  Types / Structure
+*----------------------------------------------------------------------*
+TYPES: BEGIN OF ty_vbak,
+        vbeln TYPE vbak-vbeln,
+        posnr TYPE vbap-posnr,
+        auart TYPE vbak-auart,
+        matnr TYPE vbap-matnr,
+        maktx TYPE makt-maktx,
+
+  END OF ty_vbak.
+
+*&---------------------------------------------------------------------*
+*Workarea
+*&---------------------------------------------------------------------*
+DATA: wa_vbak TYPE ty_vbak,
+      wa_fieldcat TYPE slis_fieldcat_alv.
+*&---------------------------------------------------------------------*
+*Tabela Interna
+*&---------------------------------------------------------------------*
+DATA: ti_vbak TYPE STANDARD TABLE OF ty_vbak,
+       ti_fieldcat TYPE slis_t_fieldcat_alv.
+
+*&---------------------------------------------------------------------*
+*Selection-Screeen
+*&---------------------------------------------------------------------*
+SELECT-OPTIONS s_vbeln FOR vbak-vbeln.
+*&---------------------------------------------------------------------*
+*Start-of-Selection
+*&---------------------------------------------------------------------*
+START-OF-SELECTION.
+
+  SELECT k~vbeln
+         p~posnr
+         k~auart
+         p~matnr
+    INTO TABLE ti_vbak
+    FROM vbak AS k
+    INNER JOIN vbap AS p
+    ON k~vbeln = p~vbeln.
+
+*Preenche Fieldcat
+    wa_fieldcat-col_pos    = 1.
+    wa_fieldcat-tabname    = 'TI_VBAK'.
+    wa_fieldcat-fieldname  = 'vbeln'.
+    wa_fieldcat-outputlen  = 10.
+    wa_fieldcat-seltext_l = 'Ordem de Vendas'.
+    APPEND wa_fieldcat TO ti_fieldcat.
+
+    wa_fieldcat-col_pos    = 2.
+    wa_fieldcat-tabname    = 'TI_VBAK'.
+    wa_fieldcat-fieldname  = 'posnr'.
+    wa_fieldcat-outputlen  = 10.
+    wa_fieldcat-seltext_l = 'Item'.
+    APPEND wa_fieldcat TO ti_fieldcat.
+
+    wa_fieldcat-col_pos    = 3.
+    wa_fieldcat-tabname    = 'TI_VBAK'.
+    wa_fieldcat-fieldname  = 'auart'.
+    wa_fieldcat-outputlen  = 10.
+    wa_fieldcat-seltext_l = 'Tipo'.
+    APPEND wa_fieldcat TO ti_fieldcat.
+
+    wa_fieldcat-col_pos    = 4.
+    wa_fieldcat-tabname    = 'TI_VBAK'.
+    wa_fieldcat-fieldname  = 'matnr'.
+    wa_fieldcat-outputlen  = 10.
+    wa_fieldcat-seltext_l = 'Material'.
+    APPEND wa_fieldcat TO ti_fieldcat.
+
+
+CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      it_fieldcat   = ti_fieldcat
+    TABLES
+      t_outtab      = ti_vbak
+    EXCEPTIONS
+      program_error = 1
+      OTHERS        = 2.

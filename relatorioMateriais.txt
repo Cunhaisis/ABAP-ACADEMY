@@ -1,0 +1,49 @@
+*&---------------------------------------------------------------------*
+*& Report  ZMATERIAL2002
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+REPORT zmaterial2002.
+
+TABLES mara.
+
+TYPES: BEGIN OF ty_mara,
+          matnr TYPE mara-matnr,
+          brgew TYPE mara-brgew,
+          ntgew TYPE mara-ntgew,
+          maktx TYPE makt-maktx,
+
+
+  END OF ty_mara.
+
+DATA: wa_mara TYPE ty_mara.
+
+DATA: ti_mara TYPE STANDARD TABLE OF ty_mara.
+
+
+SELECT-OPTIONS s_matnr FOR mara-matnr.
+
+START-OF-SELECTION.
+
+  SELECT m~matnr
+    m~brgew
+    m~ntgew
+    k~maktx
+    INTO TABLE ti_mara
+    FROM mara AS m
+    INNER JOIN makt AS k
+    ON m~matnr = k~matnr
+    WHERE m~matnr IN s_matnr
+    AND k~spras EQ sy-langu.
+
+
+  LOOP AT ti_mara INTO wa_mara.
+
+    WRITE: / wa_mara-matnr,
+             wa_mara-maktx,
+             wa_mara-brgew.
+
+  ENDLOOP.

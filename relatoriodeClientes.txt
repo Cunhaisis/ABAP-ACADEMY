@@ -1,0 +1,101 @@
+*&---------------------------------------------------------------------*
+*& Report  ZCLIENTES2002
+*&
+*&---------------------------------------------------------------------*
+*&Descrição: Relatório de Clientes com ALV
+*&Data: 20.06.2020  - Autor Isis Cunha
+*&---------------------------------------------------------------------*
+
+REPORT zclientes2002.
+
+*----------------------------------------------------------------------*
+*  Tables
+*----------------------------------------------------------------------*
+TABLES kna1.
+
+*----------------------------------------------------------------------*
+*  Types / Structure
+*----------------------------------------------------------------------*
+TYPES: BEGIN OF ty_kna1,
+         kunnr TYPE kna1-kunnr,
+         name1 TYPE kna1-name1,
+         ort01 TYPE kna1-ort01,
+         regio TYPE kna1-regio,
+         stras TYPE kna1-stras,
+       END OF   ty_kna1.
+
+*----------------------------------------------------------------------*
+*  WorkArea
+*----------------------------------------------------------------------*
+DATA: wa_kna1     TYPE ty_kna1,
+      wa_fieldcat TYPE slis_fieldcat_alv.
+
+*----------------------------------------------------------------------*
+*  Internal Table
+*----------------------------------------------------------------------*
+DATA: ti_kna1     TYPE STANDARD TABLE OF ty_kna1,
+      ti_fieldcat TYPE slis_t_fieldcat_alv.
+
+*----------------------------------------------------------------------*
+*  Selection-Screen
+*----------------------------------------------------------------------*
+SELECT-OPTIONS s_kunnr FOR kna1-kunnr.
+
+
+START-OF-SELECTION.
+
+*Open SQL
+  SELECT  kunnr
+    name1
+    ort01
+    regio
+    stras
+    FROM kna1
+    INTO TABLE ti_kna1
+    WHERE kunnr IN s_kunnr.
+
+*Preenche Fieldcat
+  wa_fieldcat-col_pos = 1.
+  wa_fieldcat-tabname = 'TI_KNAL'.
+  wa_fieldcat-fieldname = 'KUNNR'.
+  wa_fieldcat-outputlen = '10'.
+  wa_fieldcat-seltext_l = 'Clientes'.
+  APPEND wa_fieldcat TO ti_fieldcat.
+
+  wa_fieldcat-col_pos = 2.
+  wa_fieldcat-tabname = 'TI_KNAL'.
+  wa_fieldcat-fieldname = 'NAME1'.
+  wa_fieldcat-outputlen = 35.
+  wa_fieldcat-seltext_l = 'Nome'.
+  APPEND wa_fieldcat TO ti_fieldcat.
+
+  wa_fieldcat-col_pos = 3.
+  wa_fieldcat-tabname = 'TI_KNAL'.
+  wa_fieldcat-fieldname = 'ORT01'.
+  wa_fieldcat-outputlen = 35.
+  wa_fieldcat-seltext_l = 'Cidade'.
+  APPEND wa_fieldcat TO ti_fieldcat.
+
+  wa_fieldcat-col_pos = 4.
+  wa_fieldcat-tabname = 'TI_KNAL'.
+  wa_fieldcat-fieldname = 'REGIO'.
+  wa_fieldcat-outputlen = 3.
+  wa_fieldcat-seltext_l = 'UF'.
+  APPEND wa_fieldcat TO ti_fieldcat.
+
+  wa_fieldcat-col_pos = 5.
+  wa_fieldcat-tabname = 'TI_KNAL'.
+  wa_fieldcat-fieldname = 'STRAS'.
+  wa_fieldcat-outputlen = 35.
+  wa_fieldcat-seltext_l = 'Endereço'.
+  APPEND wa_fieldcat TO ti_fieldcat.
+
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      it_fieldcat   = ti_fieldcat
+    TABLES
+      t_outtab      = ti_kna1
+    EXCEPTIONS
+      program_error = 1
+      OTHERS        = 2.
