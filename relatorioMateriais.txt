@@ -45,5 +45,5 @@ START-OF-SELECTION.
     WRITE: / wa_mara-matnr,
              wa_mara-maktx,
              wa_mara-brgew.
-
+ 
   ENDLOOP.
